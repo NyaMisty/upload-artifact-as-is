@@ -36,8 +36,8 @@ jobs:
           sed -i 's|return 1\.5;|return 0\.0;|g' dist/index.js
           sed -i 's|return 3000;|return 0;|g' dist/index.js
           perl -0777 -i.original -pe 's/config_variables_1\.getRuntimeToken\(\)\)\n.*\]/config_variables_1\.getRuntimeToken\(\)\)\]\, \{socketTimeout: 10000\}/g' dist/index.js
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      #- name: Setup tmate session
+      #  uses: mxschmitt/action-tmate@v3
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
@@ -51,7 +51,7 @@ jobs:
           else 
             # Uncommitted changes
             git commit -m "AutoUpdate-${{ steps.date.outputs.date }}" -a
-            git tag -a -m "Nightly-${{ steps.date.outputs.date }}" nightly
+            git tag -f -a -m "Nightly-${{ steps.date.outputs.date }}" nightly
           fi
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -59,3 +59,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
           tags: true
+          force: true
