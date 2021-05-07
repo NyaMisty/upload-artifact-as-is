@@ -25,10 +25,6 @@ jobs:
         uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install # will run `yarn install` command
-      - name: "Yarn Build"
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: build # will run `yarn build` command
       - name: "Yarn Release"
         uses: borales/actions-yarn@v2.0.0
         with:
@@ -40,7 +36,7 @@ jobs:
         run: |
           git config --local user.email "buildworker@misty.moe"
           git config --local user.name "NyaMistyBuildWorker"
-          if [ -z "$(git status --porcelain)" ]; then 
+          if [ -z "$(git diff-index --quiet HEAD)" ]; then 
             # Working directory clean
             echo "No changes, have a good day~"
           else 
