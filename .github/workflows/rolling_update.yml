@@ -31,8 +31,8 @@ jobs:
           cmd: release # will run `yarn test` command
       - name: "Patch code" # patch getUploadChunkSize, getRetryLimit, getRetryMultiplier, getInitialRetryIntervalInMilliseconds, createHttpClient
         run: |
-          sed -i 's|8 \* 1024 \* 1024|600 * 1024|g' dist/index.js
-          sed -i 's|return 5;|return 100;|g' dist/index.js
+          sed -i 's|8 \* 1024 \* 1024|256 * 1024|g' dist/index.js
+          sed -i 's|return 5;|return 10000;|g' dist/index.js
           sed -i 's|return 1\.5;|return 0\.0;|g' dist/index.js
           sed -i 's|return 3000;|return 0;|g' dist/index.js
           perl -0777 -i.original -pe 's/config_variables_1\.getRuntimeToken\(\)\)\n.*\]/config_variables_1\.getRuntimeToken\(\)\)\]\, \{socketTimeout: 10000\}/g' dist/index.js
