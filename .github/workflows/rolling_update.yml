@@ -45,7 +45,7 @@ jobs:
         run: |
           git config --local user.email "buildworker@misty.moe"
           git config --local user.name "NyaMistyBuildWorker"
-          if ! git diff-index --quiet HEAD; then 
+          if git diff-index --quiet HEAD; then 
             # Working directory clean
             echo "No changes, have a good day~"
           else 
