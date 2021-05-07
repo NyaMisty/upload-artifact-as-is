@@ -1,0 +1,53 @@
+name: Rolling Update
+on:
+  workflow_dispatch:
+    inputs:
+      unk:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    # Daily
+    #- cron: '0 8 * * *'
+    # Every 3 days
+    - cron: '0 0 */3 * *'
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm i -g @vercel/ncc
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build # will run `yarn build` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: test # will run `yarn test` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: release # will run `yarn test` command
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Commit files
+        run: |
+          git config --local user.email "buildworker@misty.moe"
+          git config --local user.name "NyaMistyBuildWorker"
+          if [ -z "$(git status --porcelain)" ]; then 
+            # Working directory clean
+          else 
+            # Uncommitted changes
+            git commit -m "AutoUpdate-${{ steps.date.outputs.date }}" -a
+            git tag -a -m "Nightly-${{ steps.date.outputs.date }}" nightly
+          fi
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          tags: true
