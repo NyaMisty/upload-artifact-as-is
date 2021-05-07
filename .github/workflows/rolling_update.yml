@@ -21,13 +21,16 @@ jobs:
         run: |
           sudo npm i -g @vercel/ncc
       - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.0.0
+      - name: "Yarn Install"
+        uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.0.0
+      - name: "Yarn Build"
+        uses: borales/actions-yarn@v2.0.0
         with:
           cmd: build # will run `yarn build` command
-      - uses: borales/actions-yarn@v2.0.0
+      - name: "Yarn Release"
+        uses: borales/actions-yarn@v2.0.0
         with:
           cmd: release # will run `yarn test` command
       - name: Get current date
