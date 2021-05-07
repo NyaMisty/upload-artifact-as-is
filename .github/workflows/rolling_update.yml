@@ -17,8 +17,8 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
+      - run: sudo npm i -g @vercel/ncc
       - uses: actions/checkout@v2
-      - run: npm i -g @vercel/ncc
       - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install # will run `yarn install` command
