@@ -29,6 +29,11 @@ jobs:
         uses: borales/actions-yarn@v2.0.0
         with:
           cmd: release # will run `yarn test` command
+      - name: "Patch code"
+        run: |
+          sed -i 's|8 \* 1024 \* 1024|600 * 1024|g' dist/index.js
+          sed -i 's|return 5;|return 100;|g' dist/index.js
+          sed -i 's|return 1.5;|return 0.0;|g' dist/index.js
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
