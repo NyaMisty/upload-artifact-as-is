@@ -39,6 +39,7 @@ jobs:
           git config --local user.name "NyaMistyBuildWorker"
           if [ -z "$(git status --porcelain)" ]; then 
             # Working directory clean
+            echo "No changes, have a good day~"
           else 
             # Uncommitted changes
             git commit -m "AutoUpdate-${{ steps.date.outputs.date }}" -a
