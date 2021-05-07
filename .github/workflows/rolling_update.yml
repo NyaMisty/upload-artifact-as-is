@@ -14,7 +14,7 @@ on:
     - cron: '0 0 */3 * *'
 jobs:
   build:
-    name: Test
+    name: Rolling update
     runs-on: ubuntu-latest
     steps:
       - name: Prepare command depends
@@ -34,6 +34,8 @@ jobs:
           sed -i 's|8 \* 1024 \* 1024|600 * 1024|g' dist/index.js
           sed -i 's|return 5;|return 100;|g' dist/index.js
           sed -i 's|return 1.5;|return 0.0;|g' dist/index.js
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
