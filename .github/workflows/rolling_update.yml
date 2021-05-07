@@ -35,6 +35,7 @@ jobs:
           sed -i 's|return 5;|return 10000;|g' dist/index.js
           sed -i 's|return 1\.5;|return 1\.0;|g' dist/index.js
           sed -i 's|return 3000;|return 2000;|g' dist/index.js
+          sed -i 's| \* retryCount||g' dist/index.js
           perl -0777 -i.original -pe 's/config_variables_1\.getRuntimeToken\(\)\)\n.*\]/config_variables_1\.getRuntimeToken\(\)\)\]\, \{socketTimeout: 12000\}/g' dist/index.js
       #- name: Setup tmate session
       #  uses: mxschmitt/action-tmate@v3
