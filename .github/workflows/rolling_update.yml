@@ -17,7 +17,10 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - run: sudo npm i -g @vercel/ncc
+      - name: Prepare command depends
+        run: |
+          sudo npm i -g @vercel/ncc
+          sudo apt-get update && sudo apt install git
       - uses: actions/checkout@v2
       - uses: borales/actions-yarn@v2.0.0
         with:
