@@ -4,9 +4,7 @@ on:
     inputs:
       unk:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
   schedule:
     # Daily
     #- cron: '0 8 * * *'

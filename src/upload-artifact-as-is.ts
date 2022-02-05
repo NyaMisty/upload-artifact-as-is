@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import { create, UploadOptions } from '@actions/artifact'
-import { basename } from 'path'
+import { basename, dirname } from 'path'
 import { Inputs } from './constants'
 import { findFilesToUpload } from './search'
 
@@ -28,7 +28,7 @@ async function run(): Promise<void> {
                 await artifactClient.uploadArtifact(
                     basename(file),
                     [file],
-                    searchResult.rootDirectory,
+                    dirname(file),
                     options
                 )
             }
