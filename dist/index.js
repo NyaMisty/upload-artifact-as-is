@@ -8869,7 +8869,7 @@ function run() {
                 };
                 for (const file of searchResult.filesToUpload) {
                     core.debug(`Uploading ${file} as ${(0,external_path_.basename)(file)}`);
-                    yield artifactClient.uploadArtifact((0,external_path_.basename)(file), [file], searchResult.rootDirectory, options);
+                    yield artifactClient.uploadArtifact((0,external_path_.basename)(file), [file], (0,external_path_.dirname)(file), options);
                 }
                 core.info('Artifact upload has finished successfully!');
             }
