@@ -5,11 +5,11 @@ on:
       unk:
   push:
   pull_request:
-  schedule:
+  #schedule:
     # Daily
     #- cron: '0 8 * * *'
     # Every 3 days
-    - cron: '0 0 */3 * *'
+    #- cron: '0 0 */3 * *'
 jobs:
   build:
     name: Rolling update
