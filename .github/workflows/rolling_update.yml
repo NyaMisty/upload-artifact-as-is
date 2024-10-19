@@ -2,7 +2,10 @@ name: Rolling Update
 on:
   workflow_dispatch:
     inputs:
-      unk:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
   push:
   pull_request:
   #schedule:
@@ -35,15 +38,27 @@ jobs:
           sed -i 's|return 3000;|return 2000;|g' dist/index.js
           sed -i 's| \* retryCount||g' dist/index.js
           perl -0777 -i.original -pe 's/config_variables_1\.getRuntimeToken\(\)\)\n.*\]/config_variables_1\.getRuntimeToken\(\)\)\]\, \{socketTimeout: 12000\}/g' dist/index.js
-      #- name: Setup tmate session
-      #  uses: mxschmitt/action-tmate@v3
+          rm dist/index.js.original
+
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-      - name: Commit files
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      - name: Setup Git
         run: |
+          git config core.autocrlf false
           git config --local user.email "buildworker@misty.moe"
           git config --local user.name "NyaMistyBuildWorker"
+          git diff-index HEAD
+          git diff
+      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+
+      - name: Commit files
+        run: |
           if git diff-index --quiet HEAD; then 
             # Working directory clean
             echo "No changes, have a good day~"
