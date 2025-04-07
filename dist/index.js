@@ -108199,13 +108199,16 @@ function run() {
             }
             else {
                 core.info(`With the provided path, there will be ${searchResult.filesToUpload.length} files uploaded`);
-                core.debug(`Root artifact directory is ${searchResult.rootDirectory}`);
+                for (const file of searchResult.filesToUpload) {
+                    core.info(`- ${file}`);
+                }
+                core.info(`Root artifact directory is ${searchResult.rootDirectory}`);
                 const artifactClient = new artifact_1.DefaultArtifactClient();
                 const options = {
                 // continueOnError: true // no longer there
                 };
                 for (const file of searchResult.filesToUpload) {
-                    core.debug(`Uploading ${file} as ${(0, path_1.basename)(file)}`);
+                    core.info(`Uploading ${file} as ${(0, path_1.basename)(file)}`);
                     yield artifactClient.uploadArtifact((0, path_1.basename)(file), [file], (0, path_1.dirname)(file), options);
                 }
                 core.info('Artifact upload has finished successfully!');

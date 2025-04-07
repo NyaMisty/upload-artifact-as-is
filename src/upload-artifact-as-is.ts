@@ -17,14 +17,19 @@ async function run(): Promise<void> {
             core.info(
                 `With the provided path, there will be ${searchResult.filesToUpload.length} files uploaded`
             )
-            core.debug(`Root artifact directory is ${searchResult.rootDirectory}`)
+            for (const file of searchResult.filesToUpload) {
+                core.info(
+                    `- ${file}`
+                )
+            }
+            core.info(`Root artifact directory is ${searchResult.rootDirectory}`)
 
             const artifactClient = new DefaultArtifactClient()
             const options: UploadArtifactOptions = {
                 // continueOnError: true // no longer there
             }
             for (const file of searchResult.filesToUpload) {
-                core.debug(`Uploading ${file} as ${basename(file)}`)
+                core.info(`Uploading ${file} as ${basename(file)}`)
                 await artifactClient.uploadArtifact(
                     basename(file),
                     [file],
